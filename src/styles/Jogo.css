@@ -1,0 +1,170 @@
+
+.jogo-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  background: linear-gradient(135deg, #e9ddff, #dce7ff);
+}
+
+.jogo-card {
+  width: 100%;
+  max-width: 850px;
+  padding: 35px;
+  background: white;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(70, 50, 120, 0.12);
+}
+
+.jogo-card h1 {
+  color: #6741a5;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.jogo-subtitulo {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+.jogo-informacoes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.jogo-informacoes div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px;
+  background: #f5f0ff;
+  border-radius: 14px;
+}
+
+.jogo-informacoes span {
+  color: #777;
+  font-size: 14px;
+}
+
+.jogo-informacoes strong {
+  color: #6741a5;
+  font-size: 20px;
+}
+
+.cartas-grid {
+  display: grid;
+  gap: 12px;
+  margin: 0 auto 28px;
+}
+
+.cartas-facil {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 480px;
+}
+
+.cartas-medio {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 540px;
+}
+
+.cartas-dificil {
+  grid-template-columns: repeat(6, 1fr);
+  max-width: 650px;
+}
+
+.carta {
+  aspect-ratio: 1;
+  border: 2px solid #d8c5f5;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #9873d1, #6741a5);
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.carta:hover:not(:disabled) {
+  transform: translateY(-3px);
+}
+
+.carta-virada {
+  background: #f5f0ff;
+  color: #6741a5;
+}
+
+.carta-encontrada {
+  background: #e3f6e8;
+  border-color: #9ed6aa;
+  cursor: default;
+}
+
+.jogo-botoes {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.botao-principal,
+.botao-secundario {
+  padding: 13px 22px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.botao-principal {
+  background: #6741a5;
+  color: white;
+}
+
+.botao-principal:hover {
+  background: #523286;
+}
+
+.botao-secundario {
+  background: #eee7fa;
+  color: #6741a5;
+}
+
+.botao-secundario:hover {
+  background: #dfd0f5;
+}
+
+@media (max-width: 600px) {
+  .jogo-card {
+    padding: 22px 15px;
+  }
+
+  .cartas-grid {
+    gap: 8px;
+  }
+
+  .carta {
+    border-radius: 10px;
+    font-size: 24px;
+  }
+
+  .cartas-dificil {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .jogo-informacoes div {
+    padding: 10px 5px;
+  }
+
+  .jogo-informacoes span {
+    font-size: 12px;
+  }
+
+  .jogo-informacoes strong {
+    font-size: 17px;
+  }
+}

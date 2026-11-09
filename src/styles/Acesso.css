@@ -1,0 +1,101 @@
+
+* {
+  box-sizing: border-box;
+}
+
+.acesso-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  background: linear-gradient(135deg, #eee7ff, #d9d4ff, #c9d5ff);
+  font-family: Arial, sans-serif;
+}
+
+.acesso-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 50px 35px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 25px;
+  box-shadow: 0 12px 35px rgba(85, 65, 150, 0.15);
+}
+
+.acesso-icone {
+  font-size: 65px;
+  margin-bottom: 15px;
+}
+
+.acesso-card h1 {
+  color: #6546a5;
+  font-size: 34px;
+  margin-bottom: 12px;
+}
+
+.acesso-card p {
+  color: #77718a;
+  font-size: 16px;
+  margin-bottom: 35px;
+}
+
+.acesso-botoes {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.acesso-botao {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 13px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.acesso-botao:hover {
+  transform: translateY(-3px);
+}
+
+.acesso-botao.principal {
+  background: #7955c7;
+  color: white;
+}
+
+.acesso-botao.principal:hover {
+  background: #6542b0;
+}
+
+.acesso-botao.secundario {
+  background: #eee8ff;
+  color: #6546a5;
+  border: 1px solid #d8cafa;
+}
+
+.acesso-botao.secundario:hover {
+  background: #e1d7ff;
+}
+
+.acesso-botao.sair {
+  background: #fff0f0;
+  color: #c44b58;
+  border: 1px solid #f2cccc;
+}
+
+.acesso-botao.sair:hover {
+  background: #ffe0e0;
+}
+
+@media (max-width: 480px) {
+  .acesso-card {
+    padding: 40px 22px;
+  }
+
+  .acesso-card h1 {
+    font-size: 28px;
+  }
+}

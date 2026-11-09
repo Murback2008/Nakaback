@@ -1,0 +1,112 @@
+
+.identificacao {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #eee8ff, #dcd6ff, #e9eaff);
+  font-family: Arial, sans-serif;
+}
+
+.identificacao-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 36px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 12px 35px rgba(83, 65, 145, 0.15);
+}
+
+.identificacao-card h1 {
+  color: #59428f;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.identificacao-card > p {
+  color: #777;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.identificacao-opcoes {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.identificacao-opcoes button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: #f0edfa;
+  color: #59428f;
+  cursor: pointer;
+}
+
+.identificacao-opcoes button.selecionado {
+  background: #7961bd;
+  color: white;
+}
+
+.identificacao-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.identificacao-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #59428f;
+  font-weight: bold;
+}
+
+.identificacao-card input {
+  padding: 13px;
+  border: 1px solid #ddd5f2;
+  border-radius: 10px;
+  outline: none;
+  font-size: 15px;
+}
+
+.identificacao-card input:focus {
+  border-color: #7961bd;
+}
+
+.identificacao-card form button {
+  padding: 14px;
+  background: #7961bd;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.identificacao-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.identificacao-card .voltar {
+  display: block;
+  margin: 18px auto 0;
+  border: none;
+  background: transparent;
+  color: #7961bd;
+  cursor: pointer;
+}
+
+.mensagem-erro {
+  color: #c03950;
+  font-size: 14px;
+}
+
+.mensagem-sucesso {
+  color: #287a4b;
+  font-size: 14px;
+}
