@@ -51,7 +51,8 @@ export function AuthProvider({ children }) {
         data: {
           nome,
         },
-        emailRedirectTo: `${window.location.origin}/modo-jogo`,
+        // A confirmação leva a uma página própria, sem entrar direto no jogo
+        emailRedirectTo: `${window.location.origin}/confirmado`,
       },
     });
 

@@ -1,10 +1,28 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR" data-tema="claro">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>jogo-da-memoria</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Nakaback, um jogo da memória delicado para jogar sozinho ou em dupla." />
+    <title>Nakaback</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Aplica o tema salvo antes da primeira pintura, evitando o "flash" de tema errado -->
+    <script>
+      try {
+        var salvo = localStorage.getItem("nakaback:tema");
+        if (salvo === "escuro" || salvo === "claro") {
+          document.documentElement.setAttribute("data-tema", salvo);
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

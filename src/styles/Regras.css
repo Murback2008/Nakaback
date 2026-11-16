@@ -1,0 +1,153 @@
+.regras-secao {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: clamp(28px, 6vw, 44px);
+}
+
+.regras-passos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  counter-reset: passo;
+}
+
+.regras-passos li {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  align-items: center;
+  gap: 18px;
+  counter-increment: passo;
+}
+
+.regras-passos li p {
+  position: relative;
+}
+
+.regras-passos li p::before {
+  content: counter(passo);
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--fonte-titulo);
+  font-size: 0.95rem;
+  color: var(--acento);
+}
+
+.passo-visual {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.passo-icone {
+  align-items: center;
+  color: var(--acento);
+}
+
+.mini-carta {
+  display: block;
+  width: 46px;
+  aspect-ratio: 5 / 6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mini-carta.frente {
+  display: grid;
+  place-items: center;
+  background: var(--carta-frente);
+  border: 1.5px solid var(--borda);
+}
+
+.mini-carta img {
+  width: 80%;
+  height: 80%;
+}
+
+.regras-dificuldades {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+}
+
+.regras-dificuldades li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--tinta-suave);
+}
+
+.regras-dificuldades svg {
+  color: var(--acento);
+}
+
+.regras-dificuldades strong {
+  color: var(--tinta);
+}
+
+.tabela-rolagem {
+  overflow-x: auto;
+}
+
+.regras-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+}
+
+.regras-tabela th,
+.regras-tabela td {
+  padding: 12px 14px 12px 0;
+  border-bottom: 1px solid var(--borda);
+  text-align: left;
+  vertical-align: top;
+}
+
+.regras-tabela thead th {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 1.05rem;
+  color: var(--acento);
+}
+
+.regras-tabela tbody th {
+  width: 24%;
+  font-weight: 600;
+}
+
+.regras-tabela td {
+  color: var(--tinta-suave);
+}
+
+.regras-nota {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--tinta-suave);
+  font-size: 0.92rem;
+}
+
+.regras-voltar {
+  align-self: flex-start;
+}
+
+@media (max-width: 560px) {
+  .regras-passos li {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .passo-visual {
+    justify-content: flex-start;
+  }
+
+  .regras-tabela {
+    min-width: 520px;
+  }
+}

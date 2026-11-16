@@ -1,0 +1,187 @@
+/* ---------- Grade ---------- */
+
+.cartas-grid {
+  display: grid;
+  gap: clamp(8px, 1.6vw, 14px);
+  width: 100%;
+  margin: 0 auto;
+  perspective: 1200px;
+}
+
+.cartas-facil {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 500px;
+}
+
+.cartas-medio {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 520px;
+}
+
+.cartas-dificil {
+  grid-template-columns: repeat(6, 1fr);
+  max-width: 680px;
+}
+
+@media (max-width: 560px) {
+  .cartas-dificil {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 100%;
+  }
+}
+
+/* Celulares na horizontal: menos linhas para caber na altura da tela */
+@media (orientation: landscape) and (max-height: 520px) {
+  .cartas-facil {
+    grid-template-columns: repeat(6, 1fr);
+    max-width: 520px;
+  }
+
+  .cartas-medio,
+  .cartas-dificil {
+    grid-template-columns: repeat(8, 1fr);
+    max-width: 640px;
+  }
+}
+
+/* ---------- Carta ---------- */
+
+.carta {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 6;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 14px;
+  touch-action: manipulation;
+  transition: transform 0.18s ease;
+}
+
+.carta:hover:not(:disabled) {
+  transform: translateY(-3px);
+}
+
+.carta:disabled {
+  cursor: default;
+}
+
+.carta-giro {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.carta-virada .carta-giro {
+  transform: rotateY(180deg);
+}
+
+.carta-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.carta-verso {
+  box-shadow: var(--sombra-sm);
+}
+
+.carta-frente {
+  transform: rotateY(180deg);
+  background: var(--carta-frente);
+  border: 2px solid var(--borda);
+  box-shadow: var(--sombra-md);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.carta-frente img {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Par encontrado: fundo esverdeado, selo e um pequeno "assentar" */
+.carta-encontrada .carta-frente {
+  background: var(--carta-encontrada);
+  border-color: var(--carta-encontrada-borda);
+  box-shadow: none;
+}
+
+.carta-encontrada {
+  animation: carta-assentar 0.45s ease 0.45s;
+}
+
+.carta-com-dono .carta-frente {
+  border-color: var(--cor-dono);
+  border-width: 3px;
+}
+
+.carta-selo {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cor-dono, var(--sucesso));
+  color: #fff;
+}
+
+@keyframes carta-assentar {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.06);
+  }
+}
+
+/* ---------- Verso ---------- */
+
+.verso-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.verso-fundo {
+  fill: var(--verso-base);
+}
+
+.verso-moldura {
+  fill: none;
+  stroke: var(--verso-linha);
+  stroke-width: 1.3;
+  opacity: 0.85;
+}
+
+.verso-petala {
+  fill: none;
+  stroke: var(--verso-linha);
+  stroke-width: 1.6;
+}
+
+.verso-miolo,
+.verso-ponto {
+  fill: var(--verso-linha);
+}
+
+@media (max-width: 420px) {
+  .carta,
+  .carta-face {
+    border-radius: 11px;
+  }
+}

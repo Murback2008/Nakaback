@@ -1,0 +1,86 @@
+.mp-placar {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mp-jogador {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 22px 16px 16px;
+  border: 2px solid var(--borda);
+  border-radius: 999px 999px 999px 18px;
+  background: var(--superficie);
+}
+
+.mp-jogador.vencedor {
+  border-color: var(--cor-jogador);
+  background: var(--superficie-2);
+  padding-block: 22px;
+}
+
+.mp-ficha {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--cor-jogador);
+  color: #fff;
+  font-family: var(--fonte-titulo);
+  font-size: 1.5rem;
+}
+
+.mp-jogador.vencedor .mp-ficha {
+  width: 62px;
+  height: 62px;
+}
+
+.mp-nome {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.mp-trofeu {
+  flex-shrink: 0;
+  color: var(--cor-jogador);
+}
+
+.mp-pontos {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.mp-pontos strong {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 2.2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.mp-pontos small {
+  color: var(--tinta-suave);
+}
+
+.mp-detalhes {
+  color: var(--tinta-suave);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 420px) {
+  .mp-jogador {
+    gap: 10px;
+    padding-right: 16px;
+  }
+}

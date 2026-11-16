@@ -1,0 +1,152 @@
+.jogadores-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.jogadores-colunas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(16px, 4vw, 40px);
+}
+
+.jogador {
+  min-width: 0;
+  margin: 0;
+  padding: 22px 22px 24px;
+  border: 1.5px solid var(--borda);
+  border-radius: var(--raio-petala);
+  background: var(--superficie);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.jogador legend {
+  padding: 0 10px;
+  font-family: var(--fonte-titulo);
+  font-size: 1.15rem;
+}
+
+.jogador-previa {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.jogador-ficha {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50% 50% 50% 12px;
+  color: #fff;
+  font-family: var(--fonte-titulo);
+  font-size: 1.6rem;
+  transition: background-color 0.25s ease;
+}
+
+.jogador-previa-texto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.jogador-previa-texto strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1.1rem;
+}
+
+.jogador-previa-texto small {
+  color: var(--tinta-suave);
+}
+
+.jogador-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.jogador-campo input,
+.identificacao input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1.5px solid var(--borda-forte);
+  border-radius: var(--raio-md);
+  background: var(--fundo);
+  font-weight: 400;
+  transition: border-color 0.2s ease;
+}
+
+.jogador-campo input:focus,
+.identificacao input:focus {
+  outline: none;
+  border-color: var(--acento);
+  box-shadow: 0 0 0 3px var(--acento-suave);
+}
+
+.jogador-campo input[aria-invalid="true"] {
+  border-color: var(--erro);
+}
+
+.jogador-cores {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.cor-opcao {
+  position: relative;
+  aspect-ratio: 1;
+  min-height: 44px;
+  border: 3px solid var(--superficie);
+  border-radius: 50%;
+  background: var(--cor);
+  box-shadow: 0 0 0 1.5px var(--borda-forte);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.cor-opcao:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+
+.cor-opcao.selecionada {
+  box-shadow: 0 0 0 3px var(--tinta);
+}
+
+.cor-opcao:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.cor-opcao:disabled::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 50%;
+  height: 2px;
+  background: var(--superficie);
+  transform: rotate(-45deg);
+}
+
+.jogadores-iniciar {
+  align-self: flex-start;
+  min-width: 240px;
+}
+
+@media (max-width: 680px) {
+  .jogadores-colunas {
+    grid-template-columns: 1fr;
+  }
+
+  .jogadores-iniciar {
+    align-self: stretch;
+  }
+}
