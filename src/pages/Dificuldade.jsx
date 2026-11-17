@@ -1,66 +1,71 @@
-
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Flame, Sprout, Star } from "lucide-react";
+import BotaoVoltar from "../components/BotaoVoltar";
 import "../styles/Dificuldade.css";
+
+const opcoes = [
+  { id: "facil", nome: "Fácil", detalhe: "6 pares", texto: "Para começar e treinar sua memória.", Icone: Sprout },
+  { id: "medio", nome: "Médio", detalhe: "8 pares", texto: "Um desafio um pouco maior.", Icone: Star },
+  { id: "dificil", nome: "Difícil", detalhe: "12 pares", texto: "Teste sua memória ao máximo!", Icone: Flame },
+];
 
 function Dificuldade() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const modo = location.state?.modo || "um-jogador";
+  const jogadores = location.state?.jogadores;
+  const multiplayer = modo === "dois-jogadores";
+
+  // No multiplayer os jogadores precisam estar configurados
+  if (multiplayer && !jogadores) {
+    return <Navigate to="/jogadores" replace state={{ modo }} />;
+  }
 
   function escolherDificuldade(dificuldade) {
     navigate("/jogo", {
       state: {
         dificuldade,
         modo,
+        ...(multiplayer ? { jogadores } : {}),
       },
     });
   }
 
   return (
-    <main className="dificuldade-container">
-      <section className="dificuldade-card">
-        <h1>Escolha a dificuldade</h1>
+    <>
+      <BotaoVoltar
+        para={multiplayer ? "/jogadores" : "/modo-jogo"}
+        state={multiplayer ? { modo, jogadores } : undefined}
+      />
 
-        <p>Prepare-se para testar sua memória!</p>
+      <main className="pagina pagina-estreita">
+        <header className="pagina-cabecalho">
+          <h1>Escolha a dificuldade</h1>
+          <p>Prepare-se para testar sua memória!</p>
+        </header>
 
         <div className="dificuldade-opcoes">
-          <button
-            className="dificuldade-botao facil"
-            onClick={() => escolherDificuldade("facil")}
-          >
-            <span>🌱</span>
-            <strong>Fácil</strong>
-            <small>Para começar e treinar sua memória.</small>
-          </button>
-
-          <button
-            className="dificuldade-botao medio"
-            onClick={() => escolherDificuldade("medio")}
-          >
-            <span>⭐</span>
-            <strong>Médio</strong>
-            <small>Um desafio um pouco maior.</small>
-          </button>
-
-          <button
-            className="dificuldade-botao dificil"
-            onClick={() => escolherDificuldade("dificil")}
-          >
-            <span>🔥</span>
-            <strong>Difícil</strong>
-            <small>Teste sua memória ao máximo!</small>
-          </button>
+          {opcoes.map(({ id, nome, detalhe, texto, Icone }) => (
+            <button
+              key={id}
+              type="button"
+              className="dificuldade-botao"
+              onClick={() => escolherDificuldade(id)}
+            >
+              <span className="dificuldade-icone">
+                <Icone size={24} aria-hidden="true" />
+              </span>
+              <span className="dificuldade-texto">
+                <strong>{nome}</strong>
+                <small>{texto}</small>
+              </span>
+              <span className="dificuldade-pares">{detalhe}</span>
+            </button>
+          ))}
         </div>
-
-        <button
-          className="voltar-botao"
-          onClick={() => navigate("/modo-jogo")}
-        >
-          Voltar
-        </button>
-      </section>
-    </main>
+      </main>
+    </>
   );
 }
 

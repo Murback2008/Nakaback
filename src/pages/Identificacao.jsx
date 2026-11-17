@@ -16,6 +16,25 @@ const loginSchema = z.object({
   senha: z.string().min(1, "Digite sua senha."),
 });
 
+function traduzirErro(mensagem) {
+  const texto = (mensagem || "").toLowerCase();
+
+  if (texto.includes("invalid login credentials")) {
+    return "E-mail ou senha incorretos.";
+  }
+  if (texto.includes("email not confirmed")) {
+    return "Confirme seu e-mail antes de entrar. Procure a mensagem de confirmação na sua caixa de entrada.";
+  }
+  if (texto.includes("already registered")) {
+    return "Este e-mail já está cadastrado. Tente entrar.";
+  }
+  if (texto.includes("rate limit")) {
+    return "Muitas tentativas. Aguarde um pouco e tente novamente.";
+  }
+
+  return mensagem || "Não foi possível realizar a operação.";
+}
+
 function Identificacao() {
   const [modo, setModo] = useState("login");
   const [nome, setNome] = useState("");
@@ -62,8 +81,10 @@ function Identificacao() {
 
         if (!data.session) {
           setMensagem(
-            "Cadastro realizado! Confira seu e-mail para confirmar a conta antes de entrar."
+            "Cadastro realizado! Enviamos um e-mail de confirmação. Depois de confirmar, volte aqui e entre com seu e-mail e senha."
           );
+          setModo("login");
+          setSenha("");
         } else {
           navigate("/modo-jogo");
         }
@@ -78,16 +99,14 @@ function Identificacao() {
         navigate("/modo-jogo");
       }
     } catch (error) {
-      setErro(
-        error.message || "Não foi possível realizar a operação."
-      );
+      setErro(traduzirErro(error.message));
     } finally {
       setEnviando(false);
     }
   }
 
   return (
-    <main className="identificacao">
+    <main className="pagina pagina-estreita identificacao">
       <section className="identificacao-card">
         <h1>
           {modo === "login" ? "Bem-vindo de volta!" : "Crie sua conta"}
@@ -163,10 +182,10 @@ function Identificacao() {
             />
           </label>
 
-          {erro && <p className="mensagem-erro">{erro}</p>}
-          {mensagem && <p className="mensagem-sucesso">{mensagem}</p>}
+          {erro && <p className="mensagem-erro" role="alert">{erro}</p>}
+          {mensagem && <p className="mensagem-sucesso" role="status">{mensagem}</p>}
 
-          <button type="submit" disabled={enviando}>
+          <button type="submit" className="btn btn-principal" disabled={enviando}>
             {enviando
               ? "Aguarde..."
               : modo === "login"
@@ -177,7 +196,7 @@ function Identificacao() {
 
         <button
           type="button"
-          className="voltar"
+          className="btn-link voltar"
           onClick={() => navigate("/")}
         >
           Voltar

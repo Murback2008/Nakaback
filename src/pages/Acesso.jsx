@@ -1,58 +1,70 @@
-
 import { useNavigate } from "react-router-dom";
+import { Play, LogIn } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { figuras } from "../data/cartas";
+import VersoCarta from "../components/VersoCarta";
+import Marca from "../components/Marca";
 import "../styles/Acesso.css";
 
 function Acesso() {
   const navigate = useNavigate();
-  const { usuario, sair } = useAuth();
+  const { usuario, carregando } = useAuth();
 
-  async function handleSair() {
-    const { error } = await sair();
-
-    if (error) {
-      alert("Não foi possível sair da conta.");
-      return;
-    }
-
-    alert("Você saiu da sua conta!");
-    navigate("/");
-  }
+  const nome = usuario?.user_metadata?.nome || usuario?.email?.split("@")[0];
+  const morango = figuras.find((f) => f.id === "morango");
+  const cereja = figuras.find((f) => f.id === "cereja");
 
   return (
-    <main className="acesso-container">
-      <section className="acesso-card">
-        <div className="acesso-icone">🧠</div>
+    <main className="pagina acesso">
+      <div className="acesso-texto">
+        <Marca tamanho={38} comNome={false} />
 
-        <h1>Jogo da Memória</h1>
+        <h1>Nakaback</h1>
 
-        <p>Teste sua memória e divirta-se!</p>
+        <p className="acesso-lema">
+          Um jogo da memória para treinar a atenção sozinho ou disputar a dois.
+        </p>
 
         <div className="acesso-botoes">
           <button
-            className="acesso-botao principal"
+            type="button"
+            className="btn btn-principal"
             onClick={() => navigate("/modo-jogo")}
           >
-            🎮 Começar a jogar
+            <Play size={18} aria-hidden="true" />
+            Começar a jogar
           </button>
 
-          <button
-            className="acesso-botao secundario"
-            onClick={() => navigate("/identificacao")}
-          >
-            👤 Entrar na minha conta
-          </button>
-
-          {usuario && (
+          {!carregando && !usuario && (
             <button
-              className="acesso-botao sair"
-              onClick={handleSair}
+              type="button"
+              className="btn btn-contorno"
+              onClick={() => navigate("/identificacao")}
             >
-              🚪 Sair da conta
+              <LogIn size={18} aria-hidden="true" />
+              Entrar na minha conta
             </button>
           )}
         </div>
-      </section>
+
+        {usuario && (
+          <p className="acesso-saudacao">
+            Que bom te ver, {nome}. Suas pontuações entram no ranking.
+          </p>
+        )}
+      </div>
+
+      <div className="leque" aria-hidden="true">
+        <div className="leque-carta leque-esq">
+          <img src={cereja.src} alt="" />
+        </div>
+        <div className="leque-carta leque-meio">
+          <VersoCarta />
+        </div>
+        <div className="leque-carta leque-dir">
+          <img src={morango.src} alt="" />
+        </div>
+      </div>
     </main>
   );
 }

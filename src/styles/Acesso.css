@@ -1,101 +1,127 @@
-
-* {
-  box-sizing: border-box;
-}
-
-.acesso-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
+.acesso {
+  flex-direction: row;
   align-items: center;
-  padding: 25px;
-  background: linear-gradient(135deg, #eee7ff, #d9d4ff, #c9d5ff);
-  font-family: Arial, sans-serif;
+  justify-content: space-between;
+  gap: clamp(24px, 6vw, 80px);
 }
 
-.acesso-card {
-  width: 100%;
-  max-width: 480px;
-  padding: 50px 35px;
-  text-align: center;
-  background: #ffffff;
-  border-radius: 25px;
-  box-shadow: 0 12px 35px rgba(85, 65, 150, 0.15);
+.acesso-texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  max-width: 540px;
 }
 
-.acesso-icone {
-  font-size: 65px;
-  margin-bottom: 15px;
+.acesso-texto h1 {
+  font-size: clamp(3rem, 10vw, 5.4rem);
+  letter-spacing: -0.03em;
 }
 
-.acesso-card h1 {
-  color: #6546a5;
-  font-size: 34px;
-  margin-bottom: 12px;
-}
-
-.acesso-card p {
-  color: #77718a;
-  font-size: 16px;
-  margin-bottom: 35px;
+.acesso-lema {
+  font-size: 1.15rem;
+  color: var(--tinta-suave);
+  max-width: 34ch;
 }
 
 .acesso-botoes {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
 }
 
-.acesso-botao {
-  width: 100%;
-  padding: 16px;
+.acesso-saudacao {
+  color: var(--tinta-suave);
+  font-size: 0.95rem;
+}
+
+/* ---------- Leque de cartas ---------- */
+
+.leque {
+  position: relative;
+  flex: 0 0 clamp(260px, 38vw, 420px);
+  height: clamp(300px, 42vw, 440px);
+}
+
+.leque-carta {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 52%;
+  aspect-ratio: 5 / 6;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--carta-frente);
+  border: 2px solid var(--borda);
+  box-shadow: var(--sombra-md);
+}
+
+.leque-carta img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.leque-esq {
+  transform: translate(-95%, -52%) rotate(-12deg);
+}
+
+.leque-dir {
+  transform: translate(-5%, -48%) rotate(11deg);
+  animation: leque-respirar 6s ease-in-out infinite;
+}
+
+.leque-meio {
+  z-index: 1;
   border: none;
-  border-radius: 13px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
+  transform: translate(-50%, -50%) rotate(-1deg);
 }
 
-.acesso-botao:hover {
-  transform: translateY(-3px);
+@keyframes leque-respirar {
+  50% {
+    transform: translate(-5%, -52%) rotate(8deg);
+  }
 }
 
-.acesso-botao.principal {
-  background: #7955c7;
-  color: white;
-}
-
-.acesso-botao.principal:hover {
-  background: #6542b0;
-}
-
-.acesso-botao.secundario {
-  background: #eee8ff;
-  color: #6546a5;
-  border: 1px solid #d8cafa;
-}
-
-.acesso-botao.secundario:hover {
-  background: #e1d7ff;
-}
-
-.acesso-botao.sair {
-  background: #fff0f0;
-  color: #c44b58;
-  border: 1px solid #f2cccc;
-}
-
-.acesso-botao.sair:hover {
-  background: #ffe0e0;
-}
-
-@media (max-width: 480px) {
-  .acesso-card {
-    padding: 40px 22px;
+@media (max-width: 820px) {
+  .acesso {
+    flex-direction: column-reverse;
+    justify-content: center;
+    gap: 8px;
   }
 
-  .acesso-card h1 {
-    font-size: 28px;
+  .acesso-texto {
+    align-items: center;
+    text-align: center;
+  }
+
+  .leque {
+    flex: 0 0 auto;
+    width: min(300px, 80vw);
+    height: 240px;
+  }
+
+  .acesso-botoes {
+    justify-content: center;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .acesso {
+    flex-direction: row;
+  }
+
+  .acesso-texto {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .leque {
+    flex: 0 0 220px;
+    width: 220px;
+    height: 220px;
   }
 }

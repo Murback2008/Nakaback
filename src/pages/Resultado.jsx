@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabase";
 import { useAuth } from "../context/AuthContext";
+import { Clock, Medal, Star, Target } from "lucide-react";
+import { formatarTempo, nomesDificuldade } from "../data/cartas";
 import "../styles/Resultado.css";
 
 function Resultado() {
@@ -24,21 +26,6 @@ function Resultado() {
   const [mensagem, setMensagem] = useState("");
 
   const processamentoRef = useRef(false);
-
-  const nomesDificuldade = {
-    facil: "Fácil",
-    medio: "Médio",
-    dificil: "Difícil",
-  };
-
-  function formatarTempo() {
-    const minutos = Math.floor(tempo / 60);
-    const segundos = tempo % 60;
-
-    return `${String(minutos).padStart(2, "0")}:${String(
-      segundos
-    ).padStart(2, "0")}`;
-  }
 
   function jogarNovamente() {
     navigate("/jogo", {
@@ -129,101 +116,67 @@ function Resultado() {
   }, [usuario, carregando, pontuacao, dificuldade]);
 
   return (
-    <main className="resultado-container">
-      <section className="resultado-card">
-        <div className="resultado-trofeu">🏆</div>
-
+    <main className="pagina pagina-estreita resultado">
+      <header className="resultado-topo">
         <h1>Parabéns!</h1>
+        <p>Você completou o jogo da memória.</p>
+      </header>
 
-        <p className="resultado-subtitulo">
-          Você completou o jogo da memória!
-        </p>
+      <div className="resultado-pontuacao">
+        <strong>{pontuacao}</strong>
+        <span>pontos</span>
+      </div>
 
-        <div className="resultado-pontuacao">
-          <span>Sua pontuação</span>
-          <strong>{pontuacao}</strong>
-          <small>pontos</small>
+      <dl className="resultado-informacoes">
+        <div>
+          <dt><Target size={16} aria-hidden="true" /> Jogadas</dt>
+          <dd>{jogadas}</dd>
         </div>
-
-        <div className="resultado-informacoes">
-          <div className="resultado-item">
-            <span>🎯</span>
-            <p>Jogadas</p>
-            <strong>{jogadas}</strong>
-          </div>
-
-          <div className="resultado-item">
-            <span>⏱️</span>
-            <p>Tempo</p>
-            <strong>{formatarTempo()}</strong>
-          </div>
-
-          <div className="resultado-item">
-            <span>⭐</span>
-            <p>Dificuldade</p>
-            <strong>
-              {nomesDificuldade[dificuldade] || "Médio"}
-            </strong>
-          </div>
+        <div>
+          <dt><Clock size={16} aria-hidden="true" /> Tempo</dt>
+          <dd>{formatarTempo(tempo)}</dd>
         </div>
+        <div>
+          <dt><Star size={16} aria-hidden="true" /> Dificuldade</dt>
+          <dd>{nomesDificuldade[dificuldade] || "Médio"}</dd>
+        </div>
+      </dl>
 
-        {mensagem && (
-          <p className="resultado-mensagem">{mensagem}</p>
+      {mensagem && <p className="resultado-mensagem">{mensagem}</p>}
+
+      <section className="ranking-container">
+        <h2>
+          <Medal size={22} aria-hidden="true" /> Ranking dos jogadores
+        </h2>
+
+        {carregandoRanking ? (
+          <p>Carregando ranking...</p>
+        ) : ranking.length === 0 ? (
+          <p>Ainda não existem pontuações no ranking.</p>
+        ) : (
+          <ol className="ranking-lista">
+            {ranking.map((jogador, index) => (
+              <li
+                className={`ranking-linha ${usuario?.id === jogador.user_id ? "ranking-voce" : ""}`}
+                key={jogador.user_id}
+              >
+                <span className="ranking-posicao">{index + 1}º</span>
+                <span className="ranking-nome">{jogador.nome_jogador}</span>
+                <strong className="ranking-pontos">{jogador.pontuacao}</strong>
+              </li>
+            ))}
+          </ol>
         )}
-
-        <div className="ranking-container">
-          <h2>🏅 Ranking dos jogadores</h2>
-
-          {carregandoRanking ? (
-            <p>Carregando ranking...</p>
-          ) : ranking.length === 0 ? (
-            <p>Ainda não existem pontuações no ranking.</p>
-          ) : (
-            <div className="ranking-tabela">
-              <div className="ranking-linha ranking-cabecalho">
-                <span>Posição</span>
-                <span>Jogador</span>
-                <span>Pontos</span>
-              </div>
-
-              {ranking.map((jogador, index) => (
-                <div
-                  className="ranking-linha"
-                  key={jogador.user_id}
-                >
-                  <span className="ranking-posicao">
-                    {index + 1}º
-                  </span>
-
-                  <span className="ranking-nome">
-                    {jogador.nome_jogador}
-                  </span>
-
-                  <strong className="ranking-pontos">
-                    {jogador.pontuacao}
-                  </strong>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="resultado-botoes">
-          <button
-            className="resultado-botao principal"
-            onClick={jogarNovamente}
-          >
-            Jogar novamente
-          </button>
-
-          <button
-            className="resultado-botao secundario"
-            onClick={voltarMenu}
-          >
-            Voltar ao menu
-          </button>
-        </div>
       </section>
+
+      <div className="resultado-botoes">
+        <button type="button" className="btn btn-principal" onClick={jogarNovamente}>
+          Jogar novamente
+        </button>
+        <button type="button" className="btn btn-contorno" onClick={voltarMenu}>
+          Voltar ao menu
+        </button>
+      </div>
     </main>
   );
 }

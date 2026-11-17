@@ -1,0 +1,18 @@
+.confirmado {
+  justify-content: center;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.confirmado-icone {
+  color: var(--sucesso);
+}
+
+.confirmado-icone.erro {
+  color: var(--erro);
+}
+
+.confirmado-texto {
+  color: var(--tinta-suave);
+  max-width: 46ch;
+}
