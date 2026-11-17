@@ -47,7 +47,7 @@ Para executar o projeto, é necessário ter instalado:
 Clone o repositório e entre na pasta do projeto:
 
 ```bash
-git clone URL_DO_REPOSITORIO
+git clone https://github.com/Murback2008/Nakaback
 cd Nakaback/jogo-da-memoria
 ```
 
