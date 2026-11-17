@@ -1,9 +1,6 @@
+
 import Carta from "./Carta";
 
-/*
-  Grade de cartas usada nos dois modos.
-  `cores` (opcional) associa o id de uma carta encontrada à cor de quem a encontrou.
-*/
 function Tabuleiro({
   cartas,
   selecionadas,
@@ -13,7 +10,10 @@ function Tabuleiro({
   aoEscolher,
 }) {
   return (
-    <div className={`cartas-grid cartas-${dificuldade}`}>
+    <div
+      className={`cartas-grid cartas-${dificuldade}`}
+      aria-label="Tabuleiro do jogo da memória"
+    >
       {cartas.map((carta) => (
         <Carta
           key={carta.id}

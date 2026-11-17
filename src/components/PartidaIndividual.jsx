@@ -1,10 +1,11 @@
+
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Sparkles, RotateCcw, Home } from "lucide-react";
 import { useJogoMemoria } from "../hooks/useJogoMemoria";
 import Tabuleiro from "./Tabuleiro";
 import EstatisticasPartida from "./EstatisticasPartida";
 
-// Modo um jogador: mesmas regras e pontuação de antes
 function PartidaIndividual({ dificuldade, modo }) {
   const navigate = useNavigate();
   const resultadoEnviadoRef = useRef(false);
@@ -12,7 +13,6 @@ function PartidaIndividual({ dificuldade, modo }) {
   const jogo = useJogoMemoria(dificuldade);
   const { finalizada, quantidade, jogadas, tempo } = jogo;
 
-  // Verifica se o jogador encontrou todos os pares
   useEffect(() => {
     if (!finalizada || resultadoEnviadoRef.current) return;
 
@@ -22,9 +22,23 @@ function PartidaIndividual({ dificuldade, modo }) {
 
     navigate("/resultado", {
       replace: true,
-      state: { pontuacao, jogadas, tempo, dificuldade, modo },
+      state: {
+        pontuacao,
+        jogadas,
+        tempo,
+        dificuldade,
+        modo,
+      },
     });
-  }, [finalizada, quantidade, jogadas, tempo, dificuldade, modo, navigate]);
+  }, [
+    finalizada,
+    quantidade,
+    jogadas,
+    tempo,
+    dificuldade,
+    modo,
+    navigate,
+  ]);
 
   function reiniciarJogo() {
     resultadoEnviadoRef.current = false;
@@ -33,9 +47,27 @@ function PartidaIndividual({ dificuldade, modo }) {
 
   return (
     <main className="pagina jogo">
+      <div className="jogo-decoracao" aria-hidden="true">
+        <span className="jogo-estrela jogo-estrela-1">✦</span>
+        <span className="jogo-estrela jogo-estrela-2">✧</span>
+        <span className="jogo-estrela jogo-estrela-3">✦</span>
+        <span className="jogo-estrela jogo-estrela-4">✧</span>
+      </div>
+
       <header className="jogo-cabecalho">
-        <h1>Encontre os pares</h1>
-        <p>Vire duas cartas por vez e memorize onde cada figura está.</p>
+        <div className="jogo-selo">
+          <Sparkles size={15} aria-hidden="true" />
+          <span>Desafie sua memória</span>
+        </div>
+
+        <h1>
+          Encontre os <span>pares!</span>
+        </h1>
+
+        <p>
+          Vire duas cartas por vez e memorize onde cada figura está.
+          Concentre-se e complete sua coleção!
+        </p>
       </header>
 
       <EstatisticasPartida
@@ -45,20 +77,33 @@ function PartidaIndividual({ dificuldade, modo }) {
         quantidade={quantidade}
       />
 
-      <Tabuleiro
-        cartas={jogo.cartas}
-        selecionadas={jogo.selecionadas}
-        bloqueado={jogo.bloqueado}
-        dificuldade={dificuldade}
-        aoEscolher={jogo.selecionarCarta}
-      />
+      <section className="jogo-area-tabuleiro">
+        <Tabuleiro
+          cartas={jogo.cartas}
+          selecionadas={jogo.selecionadas}
+          bloqueado={jogo.bloqueado}
+          dificuldade={dificuldade}
+          aoEscolher={jogo.selecionarCarta}
+        />
+      </section>
 
       <div className="jogo-botoes">
-        <button type="button" className="btn btn-contorno" onClick={() => navigate("/modo-jogo")}>
-          Voltar ao menu
+        <button
+          type="button"
+          className="btn btn-contorno jogo-botao-voltar"
+          onClick={() => navigate("/modo-jogo")}
+        >
+          <Home size={18} aria-hidden="true" />
+          <span>Voltar ao menu</span>
         </button>
-        <button type="button" className="btn btn-principal" onClick={reiniciarJogo}>
-          Reiniciar partida
+
+        <button
+          type="button"
+          className="btn btn-principal jogo-botao-reiniciar"
+          onClick={reiniciarJogo}
+        >
+          <RotateCcw size={18} aria-hidden="true" />
+          <span>Reiniciar partida</span>
         </button>
       </div>
     </main>

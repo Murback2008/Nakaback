@@ -1,29 +1,64 @@
-import { Clock, Target, Trophy } from "lucide-react";
+
+import { Clock, Target, Trophy, Sparkles } from "lucide-react";
 import { formatarTempo } from "../data/cartas";
 
 function EstatisticasPartida({ tempo, jogadas, pares, quantidade }) {
   return (
     <dl className="jogo-estatisticas">
-      <div>
+      <div className="estatistica-item estatistica-tempo">
         <dt>
-          <Clock size={16} aria-hidden="true" /> Tempo
+          <span className="estatistica-icone">
+            <Clock size={19} aria-hidden="true" />
+          </span>
+          <span>Tempo</span>
         </dt>
+
         <dd>{formatarTempo(tempo)}</dd>
       </div>
-      <div>
+
+      <div className="estatistica-item estatistica-jogadas">
         <dt>
-          <Target size={16} aria-hidden="true" /> Jogadas
+          <span className="estatistica-icone">
+            <Target size={19} aria-hidden="true" />
+          </span>
+          <span>Jogadas</span>
         </dt>
+
         <dd>{jogadas}</dd>
       </div>
-      <div>
+
+      <div className="estatistica-item estatistica-pares">
         <dt>
-          <Trophy size={16} aria-hidden="true" /> Pares
+          <span className="estatistica-icone">
+            <Trophy size={19} aria-hidden="true" />
+          </span>
+          <span>Pares encontrados</span>
         </dt>
+
         <dd>
-          {pares}/{quantidade}
+          {pares}
+          <span className="estatistica-total"> / {quantidade}</span>
         </dd>
+
+        <div
+          className="estatistica-progresso"
+          role="progressbar"
+          aria-label="Progresso dos pares encontrados"
+          aria-valuemin={0}
+          aria-valuemax={quantidade}
+          aria-valuenow={pares}
+        >
+          <span
+            style={{
+              width: `${quantidade > 0 ? Math.min((pares / quantidade) * 100, 100) : 0}%`,
+            }}
+          />
+        </div>
       </div>
+
+      <span className="estatistica-brilho" aria-hidden="true">
+        <Sparkles size={15} />
+      </span>
     </dl>
   );
 }

@@ -1,11 +1,14 @@
-/* ---------- Grade ---------- */
+
+/* ==========================================
+   TABULEIRO - GRADE DE CARTAS
+========================================== */
 
 .cartas-grid {
   display: grid;
-  gap: clamp(8px, 1.6vw, 14px);
+  gap: clamp(9px, 1.8vw, 16px);
   width: 100%;
   margin: 0 auto;
-  perspective: 1200px;
+  perspective: 1400px;
 }
 
 .cartas-facil {
@@ -15,22 +18,27 @@
 
 .cartas-medio {
   grid-template-columns: repeat(4, 1fr);
-  max-width: 520px;
+  max-width: 540px;
 }
 
 .cartas-dificil {
   grid-template-columns: repeat(6, 1fr);
-  max-width: 680px;
+  max-width: 700px;
 }
 
 @media (max-width: 560px) {
+  .cartas-grid {
+    gap: 9px;
+  }
+
   .cartas-dificil {
     grid-template-columns: repeat(4, 1fr);
     max-width: 100%;
   }
 }
 
-/* Celulares na horizontal: menos linhas para caber na altura da tela */
+/* Celulares na horizontal */
+
 @media (orientation: landscape) and (max-height: 520px) {
   .cartas-facil {
     grid-template-columns: repeat(6, 1fr);
@@ -40,11 +48,13 @@
   .cartas-medio,
   .cartas-dificil {
     grid-template-columns: repeat(8, 1fr);
-    max-width: 640px;
+    max-width: 680px;
   }
 }
 
-/* ---------- Carta ---------- */
+/* ==========================================
+   CARTA
+========================================== */
 
 .carta {
   position: relative;
@@ -53,25 +63,44 @@
   aspect-ratio: 5 / 6;
   padding: 0;
   border: none;
-  background: none;
-  border-radius: 14px;
+  border-radius: 17px;
+  background: transparent;
+  cursor: pointer;
   touch-action: manipulation;
-  transition: transform 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
 }
 
 .carta:hover:not(:disabled) {
-  transform: translateY(-3px);
+  transform: translateY(-5px) scale(1.025);
+  filter: drop-shadow(0 8px 12px rgba(105, 82, 180, 0.2));
+}
+
+.carta:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.carta:focus-visible {
+  outline: 3px solid #a78bfa;
+  outline-offset: 4px;
 }
 
 .carta:disabled {
   cursor: default;
 }
 
+/* ==========================================
+   ANIMAÇÃO DE VIRAR
+========================================== */
+
 .carta-giro {
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
-  transition: transform 0.5s cubic-bezier(0.3, 0.7, 0.2, 1);
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.2, 0.75, 0.25, 1);
 }
 
 .carta-virada .carta-giro {
@@ -84,59 +113,158 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
   overflow: hidden;
+  border-radius: 17px;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
+/* ==========================================
+   VERSO DA CARTA
+========================================== */
+
 .carta-verso {
-  box-shadow: var(--sombra-sm);
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.3), transparent 45%),
+    linear-gradient(145deg, #c4b5fd 0%, #a5b4fc 48%, #818cf8 100%);
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 5px 14px rgba(91, 75, 160, 0.2),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.13),
+    inset 0 0 15px rgba(255, 255, 255, 0.15);
 }
+
+.carta-verso::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.carta-verso .verso-svg {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0.95;
+}
+
+/* ==========================================
+   FRENTE DA CARTA
+========================================== */
 
 .carta-frente {
   transform: rotateY(180deg);
-  background: var(--carta-frente);
-  border: 2px solid var(--borda);
-  box-shadow: var(--sombra-md);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  background:
+    radial-gradient(circle at 50% 30%, #ffffff 0%, #f7f3ff 70%, #eee8ff 100%);
+  border: 2px solid #c4b5fd;
+  box-shadow:
+    0 6px 16px rgba(91, 75, 160, 0.15),
+    inset 0 0 15px rgba(196, 181, 253, 0.15);
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .carta-frente img {
+  position: relative;
+  z-index: 1;
   width: 82%;
   height: 82%;
   object-fit: contain;
   user-select: none;
   -webkit-user-drag: none;
+  filter: drop-shadow(0 3px 4px rgba(75, 65, 120, 0.1));
+  animation: carta-imagem-aparecer 0.35s ease;
 }
 
-/* Par encontrado: fundo esverdeado, selo e um pequeno "assentar" */
+@keyframes carta-imagem-aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Reflexo suave na frente */
+
+.carta-reflexo {
+  position: absolute;
+  top: -60%;
+  left: -80%;
+  width: 55%;
+  height: 220%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.carta-virada:not(.carta-encontrada) .carta-reflexo {
+  animation: carta-reflexo 1s ease 0.2s;
+}
+
+@keyframes carta-reflexo {
+  0% {
+    left: -80%;
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    left: 140%;
+    opacity: 0;
+  }
+}
+
+/* Pequeno brilho decorativo */
+
+.carta-brilho {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  display: grid;
+  place-items: center;
+  color: #a78bfa;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ==========================================
+   PAR ENCONTRADO
+========================================== */
+
 .carta-encontrada .carta-frente {
-  background: var(--carta-encontrada);
-  border-color: var(--carta-encontrada-borda);
-  box-shadow: none;
+  background:
+    radial-gradient(circle at 50% 40%, #ffffff 0%, #f0fdf9 75%, #dcfce7 100%);
+  border-color: #86d6b0;
+  box-shadow:
+    0 0 0 2px rgba(134, 214, 176, 0.18),
+    0 5px 16px rgba(74, 180, 130, 0.15);
+}
+
+.carta-encontrada .carta-frente img {
+  filter: drop-shadow(0 3px 5px rgba(34, 120, 85, 0.12));
 }
 
 .carta-encontrada {
-  animation: carta-assentar 0.45s ease 0.45s;
-}
-
-.carta-com-dono .carta-frente {
-  border-color: var(--cor-dono);
-  border-width: 3px;
-}
-
-.carta-selo {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 20px;
-  height: 20px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--cor-dono, var(--sucesso));
-  color: #fff;
+  animation: carta-assentar 0.5s ease 0.45s;
 }
 
 @keyframes carta-assentar {
@@ -144,12 +272,59 @@
   100% {
     transform: scale(1);
   }
-  45% {
-    transform: scale(1.06);
+
+  40% {
+    transform: scale(1.08);
+  }
+
+  65% {
+    transform: scale(0.98);
   }
 }
 
-/* ---------- Verso ---------- */
+/* ==========================================
+   IDENTIFICAÇÃO DO JOGADOR
+========================================== */
+
+.carta-com-dono .carta-frente {
+  border-color: var(--cor-dono);
+  border-width: 3px;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--cor-dono), transparent 75%),
+    0 5px 15px color-mix(in srgb, var(--cor-dono), transparent 80%);
+}
+
+.carta-selo {
+  position: absolute;
+  z-index: 2;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cor-dono, #22c55e);
+  color: #ffffff;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.15);
+  animation: selo-aparecer 0.35s ease;
+}
+
+@keyframes selo-aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.4) rotate(-30deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+/* ==========================================
+   DESENHO DO VERSO EM SVG
+========================================== */
 
 .verso-svg {
   width: 100%;
@@ -158,30 +333,71 @@
 }
 
 .verso-fundo {
-  fill: var(--verso-base);
+  fill: transparent;
 }
 
 .verso-moldura {
   fill: none;
-  stroke: var(--verso-linha);
+  stroke: rgba(255, 255, 255, 0.8);
   stroke-width: 1.3;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 .verso-petala {
   fill: none;
-  stroke: var(--verso-linha);
+  stroke: rgba(255, 255, 255, 0.9);
   stroke-width: 1.6;
 }
 
 .verso-miolo,
 .verso-ponto {
-  fill: var(--verso-linha);
+  fill: #ffffff;
 }
 
+/* ==========================================
+   RESPONSIVIDADE
+========================================== */
+
 @media (max-width: 420px) {
+  .cartas-grid {
+    gap: 7px;
+  }
+
   .carta,
   .carta-face {
-    border-radius: 11px;
+    border-radius: 12px;
+  }
+
+  .carta-verso::after {
+    inset: 4px;
+    border-radius: 8px;
+  }
+
+  .carta-selo {
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .carta-brilho {
+    right: 4px;
+    bottom: 4px;
+  }
+}
+
+/* Acessibilidade: respeita quem prefere menos animações */
+
+@media (prefers-reduced-motion: reduce) {
+  .carta,
+  .carta-giro,
+  .carta-frente,
+  .carta-frente img {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .carta:hover:not(:disabled) {
+    transform: none;
   }
 }

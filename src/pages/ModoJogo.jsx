@@ -1,5 +1,6 @@
+
 import { useNavigate } from "react-router-dom";
-import { User, Users } from "lucide-react";
+import { UserRound, UsersRound, Sparkles, ArrowRight } from "lucide-react";
 import BotaoVoltar from "../components/BotaoVoltar";
 import "../styles/ModoJogo.css";
 
@@ -8,7 +9,6 @@ function ModoJogo() {
 
   function escolherModo(modo) {
     if (modo === "dois-jogadores") {
-      // Os dois jogadores se identificam antes de escolher a dificuldade
       navigate("/jogadores", { state: { modo } });
       return;
     }
@@ -19,46 +19,88 @@ function ModoJogo() {
   }
 
   return (
-    <>
+    <main className="modo-pagina">
+      <div className="modo-fundo" aria-hidden="true">
+        <span className="modo-estrela modo-estrela-1">✦</span>
+        <span className="modo-estrela modo-estrela-2">✧</span>
+        <span className="modo-estrela modo-estrela-3">✦</span>
+        <span className="modo-estrela modo-estrela-4">✧</span>
+        <span className="modo-orbe modo-orbe-1" />
+        <span className="modo-orbe modo-orbe-2" />
+      </div>
+
       <BotaoVoltar para="/" rotulo="Voltar ao início" />
 
-      <main className="pagina pagina-estreita">
-        <header className="pagina-cabecalho">
-          <h1>Como você quer jogar?</h1>
-          <p>Escolha o modo de jogo para começar.</p>
+      <section className="modo-conteudo">
+        <div className="modo-selo">
+          <Sparkles size={16} aria-hidden="true" />
+          <span>Uma aventura começa aqui</span>
+        </div>
+
+        <header className="modo-cabecalho">
+          <h1>
+            Como você
+            <span> quer jogar?</span>
+          </h1>
+
+          <p>
+            Escolha sua forma de entrar nessa aventura
+            e prepare sua memória para o desafio!
+          </p>
         </header>
 
         <div className="modo-opcoes">
           <button
             type="button"
-            className="modo-botao"
+            className="modo-botao modo-botao-solo"
             onClick={() => escolherModo("um-jogador")}
           >
             <span className="modo-icone">
-              <User size={28} aria-hidden="true" />
+              <UserRound size={32} strokeWidth={1.8} aria-hidden="true" />
             </span>
+
             <span className="modo-texto">
               <strong>Um jogador</strong>
-              <small>Jogue individualmente e supere sua pontuação.</small>
+              <small>
+                Uma aventura individual para testar sua memória e superar
+                seus próprios recordes.
+              </small>
+            </span>
+
+            <span className="modo-seta">
+              <ArrowRight size={20} aria-hidden="true" />
             </span>
           </button>
 
           <button
             type="button"
-            className="modo-botao"
+            className="modo-botao modo-botao-dupla"
             onClick={() => escolherModo("dois-jogadores")}
           >
             <span className="modo-icone">
-              <Users size={28} aria-hidden="true" />
+              <UsersRound size={32} strokeWidth={1.8} aria-hidden="true" />
             </span>
+
             <span className="modo-texto">
               <strong>Dois jogadores</strong>
-              <small>Revezem a vez no mesmo aparelho e vejam quem lembra mais.</small>
+              <small>
+                Chame alguém para jogar com você no mesmo aparelho e
+                descubram quem tem a melhor memória!
+              </small>
+            </span>
+
+            <span className="modo-seta">
+              <ArrowRight size={20} aria-hidden="true" />
             </span>
           </button>
         </div>
-      </main>
-    </>
+
+        <p className="modo-rodape">
+          <Sparkles size={14} aria-hidden="true" />
+          Cada partida é uma nova descoberta.
+        </p>
+      </section>
+    </main>
   );
 }
 

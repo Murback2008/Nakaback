@@ -1,26 +1,29 @@
 
 import { useEffect } from "react";
-import { supabase } from "./services/supabase";
 import {
   BrowserRouter,
   Routes,
   Route,
-  Navigate
+  Navigate,
 } from "react-router-dom";
+
+import { supabase } from "./services/supabase";
+
+import Layout from "./components/Layout";
 
 import Acesso from "./pages/Acesso";
 import ModoJogo from "./pages/ModoJogo";
 import Identificacao from "./pages/Identificacao";
 import Dificuldade from "./pages/Dificuldade";
+import Jogadores from "./pages/Jogadores";
 import Jogo from "./pages/Jogo";
 import Resultado from "./pages/Resultado";
-import Jogadores from "./pages/Jogadores";
 import ResultadoMultiplayer from "./pages/ResultadoMultiplayer";
 import Regras from "./pages/Regras";
 import Confirmado from "./pages/Confirmado";
 import RedefinirSenha from "./pages/RedefinirSenha";
-import Layout from "./components/Layout";
 
+// Testa a conexão com o Supabase ao iniciar a aplicação.
 function App() {
   useEffect(() => {
     async function testarConexao() {
@@ -30,9 +33,15 @@ function App() {
         .limit(1);
 
       if (error) {
-        console.error("Erro na conexão com Supabase:", error.message);
+        console.error(
+          "Erro na conexão com Supabase:",
+          error.message
+        );
       } else {
-        console.log("Supabase conectado com sucesso!", data);
+        console.log(
+          "Supabase conectado com sucesso!",
+          data
+        );
       }
     }
 
@@ -43,20 +52,36 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
+          {/* Entrada e modos de jogo */}
           <Route path="/" element={<Acesso />} />
           <Route path="/modo-jogo" element={<ModoJogo />} />
+
+          {/* Autenticação */}
           <Route path="/identificacao" element={<Identificacao />} />
           <Route path="/confirmado" element={<Confirmado />} />
           <Route path="/redefinir-senha" element={<RedefinirSenha />} />
+
+          {/* Configuração da partida */}
           <Route path="/jogadores" element={<Jogadores />} />
           <Route path="/dificuldade" element={<Dificuldade />} />
+
+          {/* Partida e resultados */}
           <Route path="/jogo" element={<Jogo />} />
           <Route path="/resultado" element={<Resultado />} />
-          <Route path="/resultado-multiplayer" element={<ResultadoMultiplayer />} />
+          <Route
+            path="/resultado-multiplayer"
+            element={<ResultadoMultiplayer />}
+          />
+
+          {/* Instruções */}
           <Route path="/regras" element={<Regras />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Qualquer endereço inexistente retorna à página inicial */}
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
+        />
       </Routes>
     </BrowserRouter>
   );

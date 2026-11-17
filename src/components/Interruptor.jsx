@@ -1,3 +1,4 @@
+
 import "../styles/Menu.css";
 
 function Interruptor({ ligado, aoAlternar, rotulo }) {
@@ -10,7 +11,7 @@ function Interruptor({ ligado, aoAlternar, rotulo }) {
       className={`interruptor ${ligado ? "ligado" : ""}`}
       onClick={aoAlternar}
     >
-      <span className="interruptor-bolinha" />
+      <span className="interruptor-bolinha" aria-hidden="true" />
     </button>
   );
 }

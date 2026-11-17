@@ -1,24 +1,44 @@
+
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Moon, Music, Sun, Volume2 } from "lucide-react";
+import {
+  BookOpen,
+  Moon,
+  Music,
+  Sun,
+  Volume2,
+  Sparkles,
+} from "lucide-react";
+
 import { useTema } from "../hooks/useTema";
 import { useMusica } from "../hooks/useMusica";
+
 import Interruptor from "./Interruptor";
 import Marca from "./Marca";
 import PerfilMenu from "./PerfilMenu";
+
 import "../styles/Menu.css";
 
 function MenuLateral({ aberto, aoFechar }) {
   const navigate = useNavigate();
-  const { escuro, alternarTema } = useTema();
-  const { ativa, volume, alternarMusica, definirVolume } = useMusica();
 
-  // Esc fecha o menu e a página de trás não rola enquanto ele está aberto
+  const { escuro, alternarTema } = useTema();
+
+  const {
+    ativa,
+    volume,
+    alternarMusica,
+    definirVolume,
+  } = useMusica();
+
+  // Fecha o menu com Escape e impede a rolagem da página ao fundo.
   useEffect(() => {
     if (!aberto) return undefined;
 
     function aoTeclar(evento) {
-      if (evento.key === "Escape") aoFechar();
+      if (evento.key === "Escape") {
+        aoFechar();
+      }
     }
 
     window.addEventListener("keydown", aoTeclar);
@@ -46,11 +66,17 @@ function MenuLateral({ aberto, aoFechar }) {
       <aside
         id="menu-lateral"
         className={`menu ${aberto ? "aberto" : ""}`}
-        aria-label="Menu"
+        aria-label="Menu de configurações e navegação"
+        aria-hidden={!aberto}
         inert={!aberto}
       >
         <header className="menu-topo">
           <Marca tamanho={30} />
+
+          <span className="menu-subtitulo">
+            <Sparkles size={13} aria-hidden="true" />
+            Personalize sua experiência
+          </span>
         </header>
 
         <div className="menu-corpo">
@@ -60,6 +86,7 @@ function MenuLateral({ aberto, aoFechar }) {
                 <Music size={20} aria-hidden="true" />
                 Música de fundo
               </span>
+
               <Interruptor
                 ligado={ativa}
                 aoAlternar={alternarMusica}
@@ -67,19 +94,34 @@ function MenuLateral({ aberto, aoFechar }) {
               />
             </div>
 
-            <label className={`menu-volume ${ativa ? "" : "desligado"}`}>
+            <label
+              className={`menu-volume ${ativa ? "" : "desligado"}`}
+            >
               <Volume2 size={18} aria-hidden="true" />
-              <span className="sr-only">Volume da música</span>
+
+              <span className="sr-only">
+                Volume da música
+              </span>
+
               <input
                 type="range"
                 min="0"
                 max="1"
                 step="0.05"
                 value={volume}
-                onChange={(evento) => definirVolume(evento.target.value)}
+                onChange={(evento) =>
+                  definirVolume(Number(evento.target.value))
+                }
                 disabled={!ativa}
-                style={{ "--preenchimento": `${volume * 100}%` }}
+                aria-label="Volume da música"
+                style={{
+                  "--preenchimento": `${volume * 100}%`,
+                }}
               />
+
+              <span className="menu-volume-valor">
+                {Math.round(volume * 100)}%
+              </span>
             </label>
           </div>
 
@@ -91,8 +133,10 @@ function MenuLateral({ aberto, aoFechar }) {
                 ) : (
                   <Sun size={20} aria-hidden="true" />
                 )}
+
                 Tema escuro
               </span>
+
               <Interruptor
                 ligado={escuro}
                 aoAlternar={alternarTema}
@@ -102,7 +146,11 @@ function MenuLateral({ aberto, aoFechar }) {
           </div>
 
           <div className="menu-item">
-            <button type="button" className="menu-link" onClick={abrirRegras}>
+            <button
+              type="button"
+              className="menu-link"
+              onClick={abrirRegras}
+            >
               <BookOpen size={20} aria-hidden="true" />
               Regras do jogo
             </button>

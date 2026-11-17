@@ -1,9 +1,9 @@
+
 import { Navigate, useLocation } from "react-router-dom";
 import PartidaIndividual from "../components/PartidaIndividual";
 import PartidaMultiplayer from "../components/PartidaMultiplayer";
 import "../styles/Jogo.css";
 
-// Escolhe o modo de partida a partir do que foi selecionado nas páginas anteriores
 function Jogo() {
   const location = useLocation();
 
@@ -12,15 +12,30 @@ function Jogo() {
   const jogadores = location.state?.jogadores;
 
   if (modo === "dois-jogadores") {
-    // Sem jogadores configurados (ex.: página recarregada), volta para a configuração
-    if (!jogadores) {
-      return <Navigate to="/jogadores" replace state={{ modo }} />;
+    if (!jogadores || jogadores.length !== 2) {
+      return (
+        <Navigate
+          to="/jogadores"
+          replace
+          state={{ modo: "dois-jogadores" }}
+        />
+      );
     }
 
-    return <PartidaMultiplayer dificuldade={dificuldade} jogadores={jogadores} />;
+    return (
+      <PartidaMultiplayer
+        dificuldade={dificuldade}
+        jogadores={jogadores}
+      />
+    );
   }
 
-  return <PartidaIndividual dificuldade={dificuldade} modo={modo} />;
+  return (
+    <PartidaIndividual
+      dificuldade={dificuldade}
+      modo={modo}
+    />
+  );
 }
 
 export default Jogo;

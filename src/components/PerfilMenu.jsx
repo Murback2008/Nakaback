@@ -1,14 +1,20 @@
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronUp, LogOut } from "lucide-react";
+import { ChevronUp, LogOut, UserRound } from "lucide-react";
+
 import { useAuth } from "../context/AuthContext";
+
 import "../styles/Menu.css";
 
 function formatarData(valor) {
   if (!valor) return null;
 
   const data = new Date(valor);
-  if (Number.isNaN(data.getTime())) return null;
+
+  if (Number.isNaN(data.getTime())) {
+    return null;
+  }
 
   return data.toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -17,21 +23,42 @@ function formatarData(valor) {
   });
 }
 
-// Área do usuário na parte inferior do menu. Só mostra dados reais do Supabase.
+// Área do usuário na parte inferior do menu.
 function PerfilMenu({ aoFechar }) {
   const { usuario, carregando, sair } = useAuth();
+
   const navigate = useNavigate();
 
   const [aberto, setAberto] = useState(false);
   const [saindo, setSaindo] = useState(false);
   const [erro, setErro] = useState("");
 
-  if (carregando) return null;
+  // Fecha os detalhes do perfil quando o menu lateral é fechado.
+  useEffect(() => {
+    function fecharPerfil() {
+      setAberto(false);
+      setErro("");
+    }
+
+    window.addEventListener("fechar-perfil-menu", fecharPerfil);
+
+    return () => {
+      window.removeEventListener("fechar-perfil-menu", fecharPerfil);
+    };
+  }, []);
+
+  if (carregando) {
+    return null;
+  }
 
   if (!usuario) {
     return (
       <div className="perfil-visitante">
-        <p>Você está jogando sem conta. Entre para salvar suas pontuações no ranking.</p>
+        <p>
+          Você está jogando sem conta. Entre para salvar suas pontuações
+          no ranking.
+        </p>
+
         <button
           type="button"
           className="btn btn-contorno"
@@ -47,7 +74,9 @@ function PerfilMenu({ aoFechar }) {
   }
 
   const nome =
-    usuario.user_metadata?.nome || usuario.email?.split("@")[0] || "Jogador";
+    usuario.user_metadata?.nome ||
+    usuario.email?.split("@")[0] ||
+    "Jogador";
 
   const detalhes = [
     ["Nome", nome],
@@ -56,21 +85,33 @@ function PerfilMenu({ aoFechar }) {
     ["Último acesso", formatarData(usuario.last_sign_in_at)],
   ].filter(([, valor]) => Boolean(valor));
 
+  function alternarPerfil() {
+    setAberto((valor) => !valor);
+    setErro("");
+  }
+
   async function handleSair() {
+    if (saindo) return;
+
     setErro("");
     setSaindo(true);
 
-    const { error } = await sair();
+    try {
+      const { error } = await sair();
 
-    setSaindo(false);
+      if (error) {
+        setErro("Não foi possível sair da conta. Tente novamente.");
+        return;
+      }
 
-    if (error) {
-      setErro("Não foi possível sair da conta. Tente novamente.");
-      return;
+      setAberto(false);
+      aoFechar();
+      navigate("/", { replace: true });
+    } catch {
+      setErro("Ocorreu um erro ao sair da conta. Tente novamente.");
+    } finally {
+      setSaindo(false);
     }
-
-    aoFechar();
-    navigate("/");
   }
 
   return (
@@ -86,7 +127,11 @@ function PerfilMenu({ aoFechar }) {
             ))}
           </dl>
 
-          {erro && <p className="mensagem-erro" role="alert">{erro}</p>}
+          {erro && (
+            <p className="mensagem-erro" role="alert">
+              {erro}
+            </p>
+          )}
 
           <button
             type="button"
@@ -94,7 +139,8 @@ function PerfilMenu({ aoFechar }) {
             onClick={handleSair}
             disabled={saindo}
           >
-            <LogOut size={18} />
+            <LogOut size={18} aria-hidden="true" />
+
             {saindo ? "Saindo..." : "Sair da conta"}
           </button>
         </div>
@@ -103,14 +149,17 @@ function PerfilMenu({ aoFechar }) {
       <button
         type="button"
         className="perfil-botao"
-        onClick={() => setAberto((valor) => !valor)}
+        onClick={alternarPerfil}
         aria-expanded={aberto}
         aria-controls="perfil-painel"
+        aria-label={`${aberto ? "Ocultar" : "Mostrar"} informações de ${nome}`}
       >
         <span className="perfil-avatar" aria-hidden="true">
           {nome.charAt(0).toUpperCase()}
         </span>
+
         <span className="perfil-nome">{nome}</span>
+
         <ChevronUp
           size={18}
           className={`perfil-seta ${aberto ? "aberta" : ""}`}
