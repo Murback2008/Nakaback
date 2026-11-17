@@ -18,6 +18,7 @@ import Jogadores from "./pages/Jogadores";
 import ResultadoMultiplayer from "./pages/ResultadoMultiplayer";
 import Regras from "./pages/Regras";
 import Confirmado from "./pages/Confirmado";
+import RedefinirSenha from "./pages/RedefinirSenha";
 import Layout from "./components/Layout";
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/modo-jogo" element={<ModoJogo />} />
           <Route path="/identificacao" element={<Identificacao />} />
           <Route path="/confirmado" element={<Confirmado />} />
+          <Route path="/redefinir-senha" element={<RedefinirSenha />} />
           <Route path="/jogadores" element={<Jogadores />} />
           <Route path="/dificuldade" element={<Dificuldade />} />
           <Route path="/jogo" element={<Jogo />} />

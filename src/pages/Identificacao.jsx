@@ -22,12 +22,15 @@ function traduzirErro(mensagem) {
   if (texto.includes("invalid login credentials")) {
     return "E-mail ou senha incorretos.";
   }
+
   if (texto.includes("email not confirmed")) {
     return "Confirme seu e-mail antes de entrar. Procure a mensagem de confirmação na sua caixa de entrada.";
   }
+
   if (texto.includes("already registered")) {
     return "Este e-mail já está cadastrado. Tente entrar.";
   }
+
   if (texto.includes("rate limit")) {
     return "Muitas tentativas. Aguarde um pouco e tente novamente.";
   }
@@ -44,7 +47,7 @@ function Identificacao() {
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
-  const { cadastrar, entrar } = useAuth();
+  const { cadastrar, entrar, recuperarSenha } = useAuth();
   const navigate = useNavigate();
 
   async function handleSubmit(event) {
@@ -98,6 +101,38 @@ function Identificacao() {
 
         navigate("/modo-jogo");
       }
+    } catch (error) {
+      setErro(traduzirErro(error.message));
+    } finally {
+      setEnviando(false);
+    }
+  }
+
+  // Solicitar recuperação de senha
+  async function handleRecuperarSenha() {
+    setErro("");
+    setMensagem("");
+
+    const validacao = z.string()
+      .trim()
+      .email("Digite seu e-mail para recuperar a senha.")
+      .safeParse(email);
+
+    if (!validacao.success) {
+      setErro(validacao.error.issues[0].message);
+      return;
+    }
+
+    setEnviando(true);
+
+    try {
+      const { error } = await recuperarSenha(validacao.data);
+
+      if (error) throw error;
+
+      setMensagem(
+        "Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha. Verifique também a caixa de spam."
+      );
     } catch (error) {
       setErro(traduzirErro(error.message));
     } finally {
@@ -182,10 +217,34 @@ function Identificacao() {
             />
           </label>
 
-          {erro && <p className="mensagem-erro" role="alert">{erro}</p>}
-          {mensagem && <p className="mensagem-sucesso" role="status">{mensagem}</p>}
+          {modo === "login" && (
+            <button
+              type="button"
+              className="btn-link"
+              onClick={handleRecuperarSenha}
+              disabled={enviando}
+            >
+              Esqueci minha senha
+            </button>
+          )}
 
-          <button type="submit" className="btn btn-principal" disabled={enviando}>
+          {erro && (
+            <p className="mensagem-erro" role="alert">
+              {erro}
+            </p>
+          )}
+
+          {mensagem && (
+            <p className="mensagem-sucesso" role="status">
+              {mensagem}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="btn btn-principal"
+            disabled={enviando}
+          >
             {enviando
               ? "Aguarde..."
               : modo === "login"

@@ -51,7 +51,6 @@ export function AuthProvider({ children }) {
         data: {
           nome,
         },
-        // A confirmação leva a uma página própria, sem entrar direto no jogo
         emailRedirectTo: `${window.location.origin}/confirmado`,
       },
     });
@@ -65,6 +64,16 @@ export function AuthProvider({ children }) {
       email,
       password: senha,
     });
+
+    return { data, error };
+  }
+
+  // Recuperar senha
+  async function recuperarSenha(email) {
+    const { data, error } =
+      await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/redefinir-senha`,
+      });
 
     return { data, error };
   }
@@ -83,6 +92,7 @@ export function AuthProvider({ children }) {
         carregando,
         cadastrar,
         entrar,
+        recuperarSenha,
         sair,
       }}
     >
