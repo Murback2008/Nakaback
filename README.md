@@ -21,6 +21,8 @@ O jogo permite que os usuários escolham entre jogar individualmente ou em dupla
 - Confirmação de e-mail.
 - Sistema de ranking com as melhores pontuações.
 - Opções de personalização de tema e música.
+- Recuperação de senha por e-mail.
+- Redefinição de senha por meio de link enviado ao e-mail cadastrado.
 
 ## Tecnologias utilizadas
 
@@ -130,7 +132,6 @@ O projeto utiliza o Supabase para realizar a autenticação dos usuários e arma
 
 ## Melhorias futuras
 
-- Implementação da recuperação de senha por e-mail.
 - Melhorias na experiência do usuário.
 - Implementação de novas funcionalidades e desafios.
 - Aprimoramento do sistema de ranking.
