@@ -130,10 +130,7 @@ No modo para dois jogadores, cada par encontrado vale um ponto. Os jogadores alt
 
 O projeto utiliza o Supabase para realizar a autenticação dos usuários e armazenar as pontuações utilizadas no ranking.
 
-## Melhorias futuras
 
-- Melhorias na experiência do usuário.
-- Implementação de novas funcionalidades e desafios.
 - Aprimoramento do sistema de ranking.
 
 ---
